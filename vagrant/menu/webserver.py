@@ -1,5 +1,7 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 
+class webserverHandler(BaseHTTPRequestHandler):
+
 def main():
     try:
         port = 8080
