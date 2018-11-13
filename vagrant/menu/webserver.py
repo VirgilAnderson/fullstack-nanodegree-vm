@@ -1,4 +1,5 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+import cgi
 
 class webserverHandler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -14,12 +15,30 @@ class webserverHandler(BaseHTTPRequestHandler):
                 print output
                 return
 
+            if self.path.endswith("/hola"):
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+
+                output = ""
+                output += "<html><body>&#161 Hola! <a href='/hello'>Back to hello</a></body></html>"
+                self.wfile.write(output)
+                print output
+                return
+
         except IOError:
             self.send_error(404, "File Not Found %s" % self.path)
 
+    def do_POST(self):
+        try:
+            self.send_response(301)
+            self.end_headers()
+
+        except:
+
 def main():
     try:
-        port = 8080
+        port = 2345
         server = HTTPServer(('', port), webserverHandler)
         print "Web server running on port %s" % port
         server.serve_forever()
@@ -28,5 +47,5 @@ def main():
         print "^C entered, stopping web server..."
         server.socket.close()
 
-if __name-- == '__main__':
+if __name__ == '__main__':
     main()
